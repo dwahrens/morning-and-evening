@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+$magnolia: #F7F0F5;
+$almond: #DECBB7;
+$middlegrey: #8F857D;
+$davysgrey: #5C5552;
+$blackcoffee: #433633;
+
+$primary: $almond;
+$grey-light: $middlegrey;
+$grey-darker: $davysgrey;
+$info: $davysgrey;
+$body-background-color: $blackcoffee;
+$text: $magnolia;
+$family-sans-serif: "Roboto", sans-serif;
+
+hr.is-dark {
+  background-color: $blackcoffee;
+}
+
+.is-white-icon { filter: invert(100%) sepia(10%) saturate(7453%) hue-rotate(293deg) brightness(120%) contrast(93%); }
+.calendar-picker { padding: 0.5em; border-radius: 2px; font-size: 0.75em; background-color: $primary; border: none; }
+
+@import "../node_modules/bulma/sass/utilities/_all.sass";
+@import "../node_modules/bulma/sass/base/_all.sass";
+@import "../node_modules/bulma/sass/grid/_all.sass";
+@import "../node_modules/bulma/sass/helpers/_all.sass";
+@import "../node_modules/bulma/sass/components/_all.sass";
+@import "../node_modules/bulma/sass/layout/_all.sass";
+@import "../node_modules/bulma/sass/elements/_all.sass";
+
+.element {
+  &.is-loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.5;
+      &:after {
+          @include loader;
+          position: absolute;
+          top: calc(50% - 2.5em);
+          left: calc(50% - 2.5em);
+          width: 5em;
+          height: 5em;
+          border-width: 0.25em;
+      }
+  }
+}

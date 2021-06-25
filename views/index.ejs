@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Spurgeon Morning & Evening Devotional</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="Charles Spurgeon Morning & Evening Devotional">
+  <meta name="keywords"
+    content="church, baptist, reformed, christian, spurgeon, morning, evening, devotional">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="M&E App">
+  <meta name="apple-mobile-web-app-title" content="M&E App">
+  <meta name="theme-color" content="#F7F0F5">
+  <meta name="msapplication-navbutton-color" content="#F7F0F5">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/public/icons/icon-144x144.png">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="msapplication-starturl" content="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="72x72" href="/public/icons/icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="96x96" href="/public/icons/icon-96x96.png">
+  <link rel="apple-touch-icon" sizes="128x128" href="/public/icons/icon-128x128.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/public/icons/icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/public/icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/public/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/public/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/icons/favicon-16x16.png">
+  <link rel="manifest" href="public/manifest.json">
+  <link rel="stylesheet" href="public/css/bulma.min.css">
+</head>
+<body>
+  <section id="app">
+    <article class="hero">
+      <div class="hero-body">
+        <div class="container is-small">
+          <nav class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <img src="/public/icons/icon-light.png" alt="C.H. Spurgeon's Morning & Evening" height="577px" width="810px" style="height:7rem;width:15rem;">
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <div class="buttons">
+                  <button class="button is-info is-small" onclick="previous()">Previous</button>
+                  <button class="button is-info is-small" onclick="next()">Next</button>
+                </div>
+              </div>
+              <% if (isIos) { %>
+              <div class="level-item">
+                <button class="button is-primary is-small" onclick="showIos()">iOS Install</button>
+              </div>
+              <% } %>
+              <div class="level-item">
+                <label for="selectDate" class="has-text-primary pr-3">Select Date: </label>
+                <input type="date" name="selectDate" id="selectDate" class="calendar-picker" onchange="selectDate(event)"/>
+              </div>
+            </div>
+          </nav>
+          <h1 class="is-size-2 has-text-primary has-text-centered"><span id="title"></span> <span id="morningOrEvening"></span> Reading</h1>
+          <% if (isIos) { %>
+          <div id="showIos" class="is-hidden has-text-centered">
+            <p class="is-size-4">Install this app on your home screen for quick and easy access when you’re on the go.</p>
+            <p class="is-size-5">Just tap <img src="/public/icons/export.svg" class="is-white-icon" width="30" height="30" alt="Share"> in the Safari menu bar and scroll down to <b><i>“Add to Home Screen”</i></b></p>
+            <button onclick="showIos()" class="button is-info mt-3" id="hideIosButton">Hide</button>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </article>
+
+    <article class="hero is-light is-fullheight">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <h2 class="is-size-4" id="entryKeyverse"></h2>
+          <p class="is-size-5" id="entryBody"></p>
+        </div>
+      </div>
+    </article>
+  </section>
+  <!-- Eventually load the entire JSON file into the html to be used completely offline -->
+  <script>
+    
+    let keyverse = document.querySelector('#entryKeyverse')
+    let body = document.querySelector('#entryBody')
+    let title = document.querySelector('#title')
+    let mOE = document.querySelector('#morningOrEvening')
+    let now = new Date()
+    let day = now.getDate()
+    let month = now.getMonth() + 1
+    let year = now.getFullYear()
+    let time = ''
+    
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      time = getTime()
+      title.innerHTML = getTitle()
+      mOE.innerHTML = getMorningOrEvening()
+      fetchData()
+    }, false)
+      
+
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.register('/service-worker.js')
+    }
+
+    let selectDate = (e) => {
+      let d = e.target.value.split('-')
+      now = new Date(d[1] + '/' + d[2] + '/' + d[0])
+      day = now.getDate()
+      month = now.getMonth() + 1
+      year = now.getFullYear()
+      title.innerHTML = getTitle()
+      if (navigator.onLine) {
+        fetchData()
+      } else {
+        fetchData()
+      }
+    }
+
+    let fetchData = () => {
+      let getString = '/me/' + month + '/' + day + '/' + time
+      let myRequest = new Request(getString)
+
+      fetch(myRequest)
+        .then((response) => { return response.json() })
+        .then((data) => {
+          keyverse.innerHTML = data.keyverse
+          body.innerHTML = data.body
+        }).catch(error => { error = error })
+    }
+    let getTitle = () => {
+      var options = { weekday: 'long', month: 'long', day: 'numeric' }
+      return new Date(year, month-1, day).toLocaleString('default', options)
+    }
+    let getMorningOrEvening = () => {
+      return (time === 'pm') ? 'Evening' : 'Morning'
+    }
+    let previous = () => {
+      if (time === 'am') {
+        time = 'pm'
+        // if day is not last day of the month increment the day
+        if (new Date(now.getTime()).getDate() === 1) {
+          month--
+          now = new Date(year, month, 0)
+          day = now.getDate()
+          fetchData()
+        } else {
+          day--          
+          fetchData()
+        }
+      } else {
+        time='am'
+        // change the time to pm and get the latest
+        fetchData()
+      }
+      title.innerHTML = getTitle()
+      mOE.innerHTML = getMorningOrEvening()
+    }
+    let next = () => {
+      // Check if the time is am or pm
+      if (time === 'pm') {
+        time = 'am'
+        // if day is not last day of the month increment the day
+        if (day === new Date(year, month, 0).getDate()) {
+          month++
+          day = 1
+          fetchData()
+        } else {
+          day++
+          fetchData()
+        }
+      } else {
+        // change the time to pm and get the latest
+        time = 'pm'
+        fetchData()
+      }
+      title.innerHTML = getTitle()
+      mOE.innerHTML = getMorningOrEvening()
+    }
+      
+    let getTime = () => {
+      var hours = now.getHours()
+      var ampm = (hours >= 12) ? 'pm' : 'am'
+      return ampm
+    }
+
+    let getIDB = async (dname, sname, key) => {
+      return new Promise(function(resolve) {
+        var r = indexedDB.open(dname)
+        r.onsuccess = function(e) {
+          var idb = r.result
+          let tactn = idb.transaction(sname, "readonly")
+          let store = tactn.objectStore(sname)
+          let data = store.get(key)
+          data.onsuccess = function() {
+            resolve(data.result)
+          }
+          tactn.oncomplete = function() {
+            idb.close()
+          }
+        }
+        r.onerror = function(e) {
+          fetchData()
+        }
+      })
+    }
+    async function checkIDB(dbname) {
+      return new Promise(function(resolve) {
+        var req = indexedDB.open(dbname)
+        var existed = true
+        req.onsuccess = function () {
+            req.result.close()
+            if (!existed)
+                indexedDB.deleteDatabase(dbname)
+        }
+        req.onupgradeneeded = function () {
+            existed = false
+        }
+        resolve(existed)
+      })
+    }
+  </script>
+  <% if (isIos) { %>
+  <script>
+    let showIos = () => {
+      document.querySelector('#showIos').classList.toggle('is-hidden')
+    }
+  </script>
+  <% } %>
+</body>
+
+</html>
