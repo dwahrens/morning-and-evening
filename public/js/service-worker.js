@@ -21,6 +21,7 @@ const RUNTIME = 'runtime';
 const PRECACHE_URLS = [
   '/public/index.html',
   '/public/css/bulma.min.css',
+  '/public/js/main.js',
   '/public/manifest.json',
   '/public/icons/icon-72x72.png',
   '/public/icons/icon-96x96.png',
