@@ -1,34 +1,36 @@
 {
   "name": "pwa-morning-and-evening",
   "version": "0.0.1",
-  "description": "A PWA of Spurgeons wonderful devotional: Morning & Evening.",
+  "description": "A PWA of Spurgeon's wonderful devotional: Morning & Evening.",
   "main": "app.js",
   "scripts": {
     "css-build": "node-sass --omit-source-map-url sass/me.scss ./public/css/bulma.css",
     "css-build-min": "node-sass --omit-source-map-url sass/me.scss ./public/css/bulma.min.css --output-style compressed",
     "css-watch": "npm run css-build -- --watch",
-    "start": "nodejs app.js",
+    "start": "node app.js",
     "build": "npm run css-build-min && copy-files-from-to"
   },
   "keywords": [
     "Morning",
-    "&",
     "Evening",
     "PWA",
-    "Spurgeon"
+    "Charles",
+    "Spurgeon",
+    "Daily",
+    "Devotional"
   ],
   "author": "Drew Ahrens",
   "license": "Apache-2.0",
   "dependencies": {
-    "bulma": "^0.9.3",
-    "dotenv": "^10.0.0",
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
+    "bulma": "^0.9.4",
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
     "express-useragent": "^1.0.15",
     "fs": "0.0.1-security",
-    "helmet": "^4.6.0",
-    "node-sass": "^6.0.0",
-    "nodemon": "^2.0.7",
+    "helmet": "^5.1.1",
+    "node-sass": "^7.0.1",
+    "nodemon": "^2.0.19",
     "path": "^0.12.7"
   },
   "devDependencies": {}
