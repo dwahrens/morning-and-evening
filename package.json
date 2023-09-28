@@ -29,7 +29,7 @@
     "express-useragent": "^1.0.15",
     "fs": "0.0.1-security",
     "helmet": "^5.1.1",
-    "node-sass": "^7.0.1",
+    "sass": "^1.58.3",
     "nodemon": "^2.0.19",
     "path": "^0.12.7"
   },
