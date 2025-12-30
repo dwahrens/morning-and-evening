@@ -88,6 +88,22 @@ let next = () => {
   title.innerHTML = getTitle()
   mOE.innerHTML = getMorningOrEvening()
 }
+let share = () => {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Morning and Evening',
+      url: 'https://morningevening.dwahrens.com/'
+    }).then(() => {
+      console.log('Thanks for sharing!')
+    })
+    .catch(console.error);
+  } else {
+    document.querySelector('#share').classList.add('is-active')
+  }
+}
+let closeModal = () => {
+  document.querySelector('#share').classList.remove('is-active')
+}
 let getTime = () => {
   var hours = now.getHours()
   var ampm = (hours >= 12) ? 'pm' : 'am'
