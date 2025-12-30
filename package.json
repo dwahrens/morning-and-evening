@@ -4,11 +4,11 @@
   "description": "A PWA of Spurgeon's wonderful devotional: Morning & Evening.",
   "main": "app.js",
   "scripts": {
-    "css-build": "node-sass --omit-source-map-url sass/me.scss ./public/css/bulma.css",
-    "css-build-min": "node-sass --omit-source-map-url sass/me.scss ./public/css/bulma.min.css --output-style compressed",
+    "css-build": "sass --load-path=node_modules sass/me.scss:./public/css/bulma.css",
+    "css-build-min": "sass --load-path=node_modules --style=compressed sass/me.scss:./public/css/bulma.min.css",
     "css-watch": "npm run css-build -- --watch",
     "start": "node app.js",
-    "build": "npm run css-build-min && copy-files-from-to"
+    "develop": "nodemon -e js,ejs,html,scss,css app.js"
   },
   "keywords": [
     "Morning",
@@ -22,16 +22,15 @@
   "author": "Drew Ahrens",
   "license": "Apache-2.0",
   "dependencies": {
-    "bulma": "^0.9.4",
+    "bulma": "^1.0.4",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-useragent": "^1.0.15",
     "fs": "0.0.1-security",
     "helmet": "^5.1.1",
-    "sass": "^1.58.3",
-    "nodemon": "^2.0.19",
-    "path": "^0.12.7"
-  },
-  "devDependencies": {}
+    "nodemon": "^3.1.11",
+    "path": "^0.12.7",
+    "sass": "^1.58.3"
+  }
 }
